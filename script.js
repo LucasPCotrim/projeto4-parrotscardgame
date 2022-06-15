@@ -71,10 +71,10 @@ function fill_cards() {
     for (let i = 0; i < number_of_cards; i++) {
         DOM_card_container.innerHTML += `
                                     <div class="card" data-identifier="card" onclick="update_board_state(${i})">
-                                        <div class="card_back_face" data-identifier="back-face">
+                                        <div class="card_back_face card_face" data-identifier="back-face">
                                             <img src="imgs/front.png">
                                         </div>
-                                        <div class="card_front_face hidden" data-identifier="front-face">
+                                        <div class="card_front_face card_face hidden" data-identifier="front-face">
                                             <img src="${gif_paths[chosen_gif_indexes[i]]}">
                                         </div>
                                     </div>
@@ -89,11 +89,7 @@ function initialize_game() {
 
     fill_cards();
 
-    console.log('chosen_gif_indexes')
-    console.log(chosen_gif_indexes)
-
     cards_states = [];
-
     for (let i = 0; i < number_of_cards; i++) {
         cards_states.push('face_down');
     }
@@ -112,6 +108,8 @@ function count_occurrences_in_array(array, elem){
     return cont;
 }
 
+
+
 function flip_card(card_index) {
     DOM_cards[card_index].querySelector('.card_back_face').classList.toggle('hidden');
     DOM_cards[card_index].querySelector('.card_front_face').classList.toggle('hidden');
@@ -121,9 +119,6 @@ function flip_card(card_index) {
 
 function update_board_state(card_index) {
 
-    console.log('board_state_before:')
-    console.log('cards_states')
-    console.log(cards_states)
 
     // Card clicked was actually face-down
     if (cards_states[card_index] == 'face_down' && game_state == 'playing'){
@@ -160,7 +155,7 @@ function update_board_state(card_index) {
         }
     
 
-        
+
         setTimeout(function(){
             if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
                 && game_state == 'playing'){
@@ -170,9 +165,6 @@ function update_board_state(card_index) {
         
 
     }
-    console.log('board_state_before:')
-    console.log('cards_states')
-    console.log(cards_states)
 
     
     
