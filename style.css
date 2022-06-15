@@ -51,9 +51,9 @@ h1 {
     border: 1px solid #99CEA8;
     border-radius: 5px;
     box-sizing: border-box;
-    backface-visibility: hidden;
     transition: all .5s;
     transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 .card_face > img{
     margin: 24px 7px 22px 10px;
@@ -61,19 +61,11 @@ h1 {
     height: 100px;
 }
 
-.card_back_face {
-    transform: rotateY(0deg);
-}
-.card:active .card_back_face {
+.card_front_face {
     transform: rotateY(180deg);
 }
-.card:active .card_front_face {
-    transform: rotateY(-180deg);
-}
 
-.hidden {
-    display: none;
-}
+
 
 
 
