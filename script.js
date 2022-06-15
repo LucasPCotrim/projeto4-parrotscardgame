@@ -1,4 +1,4 @@
-// -------------------------- Global Variables --------------------------
+// -------------------------------- Global Variables --------------------------------
 
 const gif_paths = ['imgs/bobrossparrot.gif',
                    'imgs/explodyparrot.gif',
@@ -18,14 +18,22 @@ let number_of_plays; // number of times user has clicked to flip a card
 const DOM_card_container = document.querySelector('.card_container');
 let DOM_cards;
 
-// -------------------------- Functions --------------------------
+// -------------------------------- Functions --------------------------------
 
+//-------------------------------------------------------------------------
+// Function: ask_number_of_cards
+// Description: Ask user the number of cards
+//
+// Inputs: none
+//
+// Outputs: n_cards;
+//-------------------------------------------------------------------------
 function ask_number_of_cards() {
     let n_cards;
 
     let valid_number = false;
     while (valid_number == false){
-        n_cards = Number(prompt('Com quantas cartas quer jogar'));
+        n_cards = Number(prompt('Com quantas cartas quer jogar? (apenas números pares entre 4 e 14)'));
         if (n_cards % 2 == 0 && n_cards >= 4 && n_cards <= 14){
             valid_number = true;
         }
@@ -34,15 +42,29 @@ function ask_number_of_cards() {
     return n_cards;
 }
 
-
-
-
-
+//-------------------------------------------------------------------------
+// Function: comparador
+// Description: 50% chance to return a positive number
+//              and 50% chance to return a negative number
+//
+// Inputs: none
+//
+// Outputs: random_number (between -0.5 and 0.5);
+//-------------------------------------------------------------------------
 function comparador() { 
 	return Math.random() - 0.5; 
 }
 
-
+//-------------------------------------------------------------------------
+// Function: choose_gif_indexes_in_game
+// Description: Returns an array with the indexes of the random gifs to
+//              be displayed in the game. Indexes are always in pairs and the length
+//              of the array is 'number_of_cards'
+//
+// Inputs: none
+//
+// Outputs: chosen_indexes
+//-------------------------------------------------------------------------
 function choose_gif_indexes_in_game() {
 
     let chosen_indexes = [];
@@ -62,10 +84,15 @@ function choose_gif_indexes_in_game() {
     return chosen_indexes;
 }
 
-
-
-
-
+//-------------------------------------------------------------------------
+// Function: fill_cards
+// Description: Fills the 'card_container' div with 'number_of_cards'
+//              instances of the 'card' div.
+//
+// Inputs: none
+//
+// Outputs: none
+//-------------------------------------------------------------------------
 function fill_cards() {
 
     for (let i = 0; i < number_of_cards; i++) {
@@ -83,8 +110,16 @@ function fill_cards() {
     DOM_cards = document.querySelectorAll('.card');
 }
 
-
-
+//-------------------------------------------------------------------------
+// Function: initialize_game
+// Description: Calls the 'fill_cards()' function and initializes
+//              game variables such as 'cards_states', 'number_of_plays'
+//              and 'game_state'
+//
+// Inputs: none
+//
+// Outputs: none
+//-------------------------------------------------------------------------
 function initialize_game() {
 
     fill_cards();
@@ -97,7 +132,17 @@ function initialize_game() {
     game_state = 'playing';
 }
 
-
+//-------------------------------------------------------------------------
+// Function: initialize_game
+// Description: Auxiliary function that returns the number of occurrences
+//              of an element in an array
+//
+// Inputs:
+// - array: Input array.
+// - elem: element to be searched in array.
+//
+// Outputs: cont (number of occurrences)
+//-------------------------------------------------------------------------
 function count_occurrences_in_array(array, elem){
     let cont = 0;
     for (let i = 0; i < array.length; i++) {
@@ -108,8 +153,16 @@ function count_occurrences_in_array(array, elem){
     return cont;
 }
 
-
-
+//-------------------------------------------------------------------------
+// Function: flip_card(c_i)
+// Description: Flips the card by changing css properties of the
+//              'card_front_face' and 'card_back_face' divs
+//
+// Inputs:
+// - c_i:  Card index in the 'card_container' div
+//
+// Outputs: none
+//-------------------------------------------------------------------------
 function flip_card(c_i) {
     const card_front_face = DOM_cards[c_i].querySelector('.card_front_face')
     const card_back_face = DOM_cards[c_i].querySelector('.card_back_face')
@@ -127,27 +180,34 @@ function flip_card(c_i) {
     
 }
 
-
-
+//-------------------------------------------------------------------------
+// Function: update_board_state(card_index)
+// Description: Function called whenever user clicks on a card.
+//              Performs the necessary game logic and checks
+//              if all cards have been correctly guessed.
+//
+// Inputs:
+// - card_index:  Card index corresponding to clicked card
+//
+// Outputs: none
+//-------------------------------------------------------------------------
 function update_board_state(card_index) {
-
 
     // Card clicked was actually face-down
     if (cards_states[card_index] == 'face_down' && game_state == 'playing'){
+
         number_of_plays += 1;
 
+        // No card was being guessed
+        if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 0){
+            flip_card(card_index);
+            cards_states[card_index] = 'face_up_guessing';
+        }
+
         // 1 Card was already face-up (guessing)
-        if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 1){
+        else if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 1){
 
             previous_guess_index = cards_states.indexOf('face_up_guessing')
-            // console.log('-------------------------------')
-            // console.log('1 Card was already face-up (guessing)');
-            // console.log('cards_states before');
-            // console.log(cards_states);
-            // console.log('previous_guess_index');
-            // console.log(previous_guess_index);
-            // console.log('card_index');
-            // console.log(card_index);
 
             // Correct Guess
             if (chosen_gif_indexes[card_index] == chosen_gif_indexes[previous_guess_index]){
@@ -169,19 +229,10 @@ function update_board_state(card_index) {
                     cards_states[previous_guess_index] = 'face_down';
                     cards_states[card_index] = 'face_down';
                 }, 1000);
-                
             }
-
         }
 
-        // No card was being guessed
-        else if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 0){
-            flip_card(card_index);
-            cards_states[card_index] = 'face_up_guessing';
-        }
-    
-
-
+        // Check if all cards have been guessed correctly
         setTimeout(function(){
             if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
                 && game_state == 'playing'){
@@ -190,19 +241,10 @@ function update_board_state(card_index) {
                 alert(`Voce ganhou em ${number_of_plays} jogadas!`)
             }
         }, 500);
-        
-
     }
-
-    
-    
 }
 
-
-
-
-
-// -------------------------- Main --------------------------
+// -------------------------------- Main --------------------------------
 
 number_of_cards = ask_number_of_cards();
 chosen_gif_indexes = choose_gif_indexes_in_game();

@@ -67,10 +67,6 @@ h1 {
 
 
 
-
-
-
-
 @media (max-width: 540px) {
     h1{
         width: 100vw;
@@ -86,14 +82,6 @@ h1 {
     }
 
     .card {
-        background-color: #A7E9AF;
-        box-sizing: border-box;
-        width: 117px;
-        min-width: 117px;
-        height: 146px;
-        min-height: 146px;
-        border: 1px solid #99CEA8;
-        border-radius: 5px;
         margin: 0 auto 34px auto;
     }
 
