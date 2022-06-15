@@ -34,6 +34,7 @@ h1 {
 }
 
 .card {
+    position: relative;
     background-color: #A7E9AF;
     box-sizing: border-box;
     width: 117px;
@@ -46,6 +47,7 @@ h1 {
 }
 
 .card_back_face {
+    position: absolute;
     width: 100px;
     height: 100px;
     margin: 24px 7px 22px 10px;
@@ -54,6 +56,22 @@ h1 {
 .card_back_face > img{
     width: 100px;
     height: 100px;
+}
+
+.card_front_face {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    margin: 24px 7px 22px 10px;
+    box-sizing: border-box;
+}
+.card_front_face > img{
+    width: 100px;
+    height: 100px;
+}
+
+.hidden {
+    display: none;
 }
 
 
