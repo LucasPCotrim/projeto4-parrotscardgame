@@ -10,6 +10,7 @@ const gif_paths = ['imgs/bobrossparrot.gif',
 const gif_indexes = [0,1,2,3,4,5,6]; // array of gif indexes from 'gif_paths'
 let number_of_cards; // '4, 6, 8, 10, 12, 14'
 let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repeating paired indexes from 0 to 6.
+let game_state; // 'playing', 'won'
 let cards_states;   // 'face_down', 'face_up_guessing', 'face_up_correct'
 let number_of_plays; // number of times user has clicked to flip a card
 
@@ -97,6 +98,7 @@ function initialize_game() {
         cards_states.push('face_down');
     }
     number_of_plays = 0;
+    game_state = 'playing';
 }
 
 
@@ -124,7 +126,7 @@ function update_board_state(card_index) {
     console.log(cards_states)
 
     // Card clicked was actually face-down
-    if (cards_states[card_index] == 'face_down'){
+    if (cards_states[card_index] == 'face_down' && game_state == 'playing'){
         number_of_plays += 1;
 
         // 1 Card was already face-up (guessing)
@@ -156,10 +158,23 @@ function update_board_state(card_index) {
             flip_card(card_index);
             cards_states[card_index] = 'face_up_guessing';
         }
+    
+
+        
+        setTimeout(function(){
+            if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
+                && game_state == 'playing'){
+                alert(`Voce ganhou em ${number_of_plays} jogadas!`)
+            }
+        }, 500);
+        
+
     }
     console.log('board_state_before:')
     console.log('cards_states')
     console.log(cards_states)
+
+    
     
 }
 
