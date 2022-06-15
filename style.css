@@ -24,7 +24,6 @@ h1 {
 
 .card_container {
     width: 85vw;
-    height: 400px;
     margin: 7px auto;
     display: flex;
     flex-direction: row;
@@ -44,6 +43,7 @@ h1 {
     border: 1px solid #99CEA8;
     border-radius: 5px;
     margin: 0 0 34px 34px;
+    cursor: pointer;
 }
 
 .card_back_face {
