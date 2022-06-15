@@ -21,7 +21,7 @@ let DOM_cards;
 // -------------------------------- Functions --------------------------------
 
 //-------------------------------------------------------------------------
-// Function: ask_number_of_cards
+// Function: ask_number_of_cards()
 // Description: Ask user the number of cards
 //
 // Inputs: none
@@ -43,7 +43,7 @@ function ask_number_of_cards() {
 }
 
 //-------------------------------------------------------------------------
-// Function: comparador
+// Function: comparador()
 // Description: 50% chance to return a positive number
 //              and 50% chance to return a negative number
 //
@@ -56,7 +56,7 @@ function comparador() {
 }
 
 //-------------------------------------------------------------------------
-// Function: choose_gif_indexes_in_game
+// Function: choose_gif_indexes_in_game()
 // Description: Returns an array with the indexes of the random gifs to
 //              be displayed in the game. Indexes are always in pairs and the length
 //              of the array is 'number_of_cards'
@@ -85,7 +85,7 @@ function choose_gif_indexes_in_game() {
 }
 
 //-------------------------------------------------------------------------
-// Function: fill_cards
+// Function: fill_cards()
 // Description: Fills the 'card_container' div with 'number_of_cards'
 //              instances of the 'card' div.
 //
@@ -111,7 +111,7 @@ function fill_cards() {
 }
 
 //-------------------------------------------------------------------------
-// Function: initialize_game
+// Function: initialize_game()
 // Description: Calls the 'fill_cards()' function and initializes
 //              game variables such as 'cards_states', 'number_of_plays'
 //              and 'game_state'
@@ -133,7 +133,7 @@ function initialize_game() {
 }
 
 //-------------------------------------------------------------------------
-// Function: initialize_game
+// Function: initialize_game(array, elem)
 // Description: Auxiliary function that returns the number of occurrences
 //              of an element in an array
 //
@@ -236,14 +236,40 @@ function update_board_state(card_index) {
         setTimeout(function(){
             if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
                 && game_state == 'playing'){
-                
-                game_state = 'won';
-                alert(`Voce ganhou em ${number_of_plays} jogadas!`)
+                    alert(`Voce ganhou em ${number_of_plays} jogadas!`)
+                    game_won();
             }
         }, 500);
     }
 }
 
+//-------------------------------------------------------------------------
+// Function: game_won()
+// Description: Performs sequence of operations after game is won
+//
+// Inputs: none
+//
+// Outputs: none
+//-------------------------------------------------------------------------
+function game_won(){
+    
+    game_state = 'won';
+
+    const ans = prompt('Gostaria de reiniciar a partida?');
+    if (ans == 'sim'){
+        DOM_card_container.innerHTML = '';
+        number_of_cards = ask_number_of_cards();
+        chosen_gif_indexes = choose_gif_indexes_in_game();
+        initialize_game();
+    }
+    else if (ans == 'não'){
+        // Do nothing
+    }
+    else{
+        alert(`Resposta inválida! Digitar 'sim' ou 'não' `);
+        game_won();
+    }
+}
 // -------------------------------- Main --------------------------------
 
 number_of_cards = ask_number_of_cards();
