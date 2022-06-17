@@ -13,10 +13,12 @@ let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repe
 let game_state; // 'playing', 'won'
 let cards_states;   // 'face_down', 'face_up_guessing', 'face_up_correct'
 let number_of_plays; // number of times user has clicked to flip a card
+let timer = 0; // Timer (in seconds)
 
 // DOM objects
 const DOM_card_container = document.querySelector('.card_container');
 let DOM_cards;
+const DOM_display = document.querySelector('.timer_display');
 
 // -------------------------------- Functions --------------------------------
 
@@ -129,6 +131,7 @@ function initialize_game() {
         cards_states.push('face_down');
     }
     number_of_plays = 0;
+    timer = 0;
     game_state = 'playing';
 }
 
@@ -236,7 +239,8 @@ function update_board_state(card_index) {
         setTimeout(function(){
             if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
                 && game_state == 'playing'){
-                    alert(`Voce ganhou em ${number_of_plays} jogadas!`)
+                    let timer_string = get_time_string(timer);
+                    alert(`Voce ganhou em ${number_of_plays} jogadas!\nTempo de jogo ${timer_string}`);
                     game_won();
             }
         }, 500);
@@ -270,11 +274,41 @@ function game_won(){
         game_won();
     }
 }
+
+
+
+function get_time_string(timer_in_s) {
+
+    let minutes;
+    let seconds;
+    minutes = parseInt(timer_in_s / 60, 10);
+    seconds = parseInt(timer_in_s % 60, 10);
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    let timer_string = minutes + ":" + seconds;
+    return timer_string;
+
+}
+
+
+function start_timer() {
+    let timer_string;
+    setInterval(function () {
+        timer_string = get_time_string(timer);
+        DOM_display.textContent = timer_string;
+        timer++;
+    }, 1000);
+}
+
+
+
 // -------------------------------- Main --------------------------------
 
 number_of_cards = ask_number_of_cards();
 chosen_gif_indexes = choose_gif_indexes_in_game();
 initialize_game();
+start_timer();
 
 
 

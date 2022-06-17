@@ -67,6 +67,24 @@ h1 {
 
 
 
+.timer_display {
+    background-color: #75B79E;
+    border: 2px solid rgba(0, 0, 0, 1);
+    border-radius: 10px;
+    width: 90px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 1);
+}
+
+
+
 @media (max-width: 540px) {
     h1{
         width: 100vw;
