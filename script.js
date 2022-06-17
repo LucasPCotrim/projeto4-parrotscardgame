@@ -133,7 +133,7 @@ function initialize_game() {
 }
 
 //-------------------------------------------------------------------------
-// Function: initialize_game(array, elem)
+// Function: count_occurrences_in_array(array, elem)
 // Description: Auxiliary function that returns the number of occurrences
 //              of an element in an array
 //
