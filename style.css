@@ -41,6 +41,21 @@ h1 {
     min-height: 146px;
     margin: 0 0 34px 34px;
     cursor: pointer;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    transform-origin: center;
+}
+
+.oscilate:hover {
+    animation-name: oscilate;
+    animation-timing-function: linear;
+}
+@keyframes oscilate {
+    0%   { transform: translateY(0); }
+    25%  { transform: translateY(-5px); }
+    50%  { transform: translateY(0);}
+    75%  { transform: translateY(5px); }
+    100% { transform: translateY(0); }
 }
 
 .card_face {

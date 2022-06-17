@@ -100,7 +100,7 @@ function fill_cards() {
 
     for (let i = 0; i < number_of_cards; i++) {
         DOM_card_container.innerHTML += `
-                                    <div class="card" data-identifier="card" onclick="update_board_state(${i})">
+                                    <div class="card oscilate" data-identifier="card" onclick="update_board_state(${i})">
                                         <div class="card_back_face card_face" data-identifier="back-face">
                                             <img src="imgs/front.png">
                                         </div>
