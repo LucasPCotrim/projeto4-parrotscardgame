@@ -14,6 +14,7 @@ let game_state; // 'playing', 'won'
 let cards_states;   // 'face_down', 'face_up_guessing', 'face_up_correct'
 let number_of_plays; // number of times user has clicked to flip a card
 let timer = 0; // Timer (in seconds)
+let timer_interval;
 
 // DOM objects
 const DOM_card_container = document.querySelector('.card_container');
@@ -133,6 +134,7 @@ function initialize_game() {
     number_of_plays = 0;
     timer = 0;
     game_state = 'playing';
+    start_timer();
 }
 
 //-------------------------------------------------------------------------
@@ -258,6 +260,7 @@ function update_board_state(card_index) {
 function game_won(){
     
     game_state = 'won';
+    clearInterval(timer_interval);
 
     const ans = prompt('Gostaria de reiniciar a partida?');
     if (ans == 'sim'){
@@ -294,7 +297,7 @@ function get_time_string(timer_in_s) {
 
 function start_timer() {
     let timer_string;
-    setInterval(function () {
+    timer_interval = setInterval(function () {
         timer_string = get_time_string(timer);
         DOM_display.textContent = timer_string;
         timer++;
@@ -308,7 +311,7 @@ function start_timer() {
 number_of_cards = ask_number_of_cards();
 chosen_gif_indexes = choose_gif_indexes_in_game();
 initialize_game();
-start_timer();
+
 
 
 
