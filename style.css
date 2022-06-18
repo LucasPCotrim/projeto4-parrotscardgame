@@ -168,6 +168,14 @@ h1 {
         margin: 0 auto 34px auto;
     }
 
+    .card_face:hover {
+        background-color: #A7E9AF;
+    }
+    @keyframes oscilate {
+        0%   { transform: translateY(0); }
+        100% { transform: translateY(0); }
+    }
+
     .bottom_menu > div:nth-child(3) h2 {
         width: initial;
     }
