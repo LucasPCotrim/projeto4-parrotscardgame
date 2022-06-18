@@ -12,6 +12,7 @@ const sound_effects = {'bird': 'media/bird.wav',
                        'wrong': 'media/wrong.mp3',
                        'victory': 'media/victory.mp3'};
 let play_sounds = true; // whether or not to play sound effects
+const sound_volume = 0.5; // Global sound volume
 const gif_indexes = [0,1,2,3,4,5,6]; // array of gif indexes from 'gif_paths'
 let number_of_cards; // '4, 6, 8, 10, 12, 14'
 let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repeating paired indexes from 0 to 6.
@@ -27,6 +28,7 @@ let DOM_cards;
 const DOM_plays_display = document.querySelector('.n_plays_display');
 const DOM_timer_display = document.querySelector('.timer_display');
 const DOM_sound_status = document.querySelector('.bottom_menu > div:nth-child(3) h2');
+const DOM_background_music = document.querySelector('audio');
 
 // -------------------------------- Functions --------------------------------
 
@@ -181,19 +183,19 @@ function play_sound(sound_type) {
     switch (sound_type) {
         case 'bird':
             audio.src = sound_effects['bird'];
-            audio.volume = 0.2;
+            audio.volume = sound_volume;
             break;
         case 'correct':
             audio.src = sound_effects['correct'];
-            audio.volume = 0.2;
+            audio.volume = 1;
             break;
         case 'wrong':
             audio.src = sound_effects['wrong'];
-            audio.volume = 0.2;
+            audio.volume = 1;
             break;
         case 'victory':
             audio.src = sound_effects['victory'];
-            audio.volume = 0.1;
+            audio.volume = sound_volume;
             break;
     
         default:
@@ -206,24 +208,41 @@ function play_sound(sound_type) {
 
 
 //-------------------------------------------------------------------------
-// Function: toggle_sound
+// Function: toggle_sound()
 // Description: Mutes or un-mutes all sound
 //
 // Inputs: none
 //
 // Outputs: none
 //-------------------------------------------------------------------------
-function toggle_sound(){
-    play_sounds = (play_sounds == true) ? false : true;
+function toggle_sound() {
+    // play_sounds = (play_sounds == true) ? false : true;
+    play_sounds = !play_sounds;
     sound_icons = document.querySelectorAll('ion-icon');
     sound_icons[0].classList.toggle('hidden');
     sound_icons[1].classList.toggle('hidden');
     if (play_sounds){
         DOM_sound_status.innerHTML = 'Sound: On';
+        DOM_background_music.play();
     }
     else{
         DOM_sound_status.innerHTML = 'Sound: Off';
+        DOM_background_music.pause();
     }
+}
+
+//-------------------------------------------------------------------------
+// Function: start_background_music()
+// Description: Initializzes background music
+//
+// Inputs: none
+//
+// Outputs: none
+//-------------------------------------------------------------------------
+function start_background_music() {
+    DOM_background_music.currentTime=Math.floor(Math.random()*30); // Start at a random time
+    DOM_sound_status.volume = sound_volume; // set volume
+    DOM_background_music.play(); // play
 }
 
 //-------------------------------------------------------------------------
@@ -271,6 +290,9 @@ function update_board_state(card_index) {
 
         number_of_plays += 1;
         DOM_plays_display.innerHTML = number_of_plays;
+        if (number_of_plays == 1){
+            start_background_music();
+        }
 
         // No card was being guessed
         if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 0){
