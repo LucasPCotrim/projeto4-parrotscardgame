@@ -10,7 +10,7 @@ const gif_paths = ['imgs/bobrossparrot.gif',
 const gif_indexes = [0,1,2,3,4,5,6]; // array of gif indexes from 'gif_paths'
 let number_of_cards; // '4, 6, 8, 10, 12, 14'
 let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repeating paired indexes from 0 to 6.
-let game_state; // 'playing', 'won'
+let game_state; // 'playing', 'waiting' ,'won'
 let cards_states;   // 'face_down', 'face_up_guessing', 'face_up_correct'
 let number_of_plays; // number of times user has clicked to flip a card
 let timer = 0; // Timer (in miliseconds)
@@ -231,11 +231,13 @@ function update_board_state(card_index) {
                 console.log('Incorrect Guess');
                 flip_card(card_index);
                 cards_states[card_index] = 'face_up_guessing';
+                game_state = 'waiting'; // disables clicks on remaining cards while waiting 1s
                 setTimeout(function(){
                     flip_card(previous_guess_index);
                     flip_card(card_index);
                     cards_states[previous_guess_index] = 'face_down';
                     cards_states[card_index] = 'face_down';
+                    game_state = 'playing';
                 }, 1000);
             }
         }
@@ -282,7 +284,14 @@ function game_won(){
 }
 
 
-
+//-------------------------------------------------------------------------
+// Function: get_time_string(timer_in_ms)
+// Description: Returns a string representing game time
+//
+// Inputs: timer_in_ms (game time in ms)
+//
+// Outputs: timer_string
+//-------------------------------------------------------------------------
 function get_time_string(timer_in_ms) {
 
     let minutes;
@@ -308,7 +317,14 @@ function get_time_string(timer_in_ms) {
 
 }
 
-
+//-------------------------------------------------------------------------
+// Function: start_timer()
+// Description: Starts timer at the beggining of the game and when reset
+//
+// Inputs: none
+//
+// Outputs: none
+//-------------------------------------------------------------------------
 function start_timer() {
     let timer_string;
     timer_interval = setInterval(function () {
