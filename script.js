@@ -12,7 +12,7 @@ const sound_effects = {'bird': 'media/bird.wav',
                        'wrong': 'media/wrong.mp3',
                        'victory': 'media/victory.mp3'};
 let play_sounds = true; // whether or not to play sound effects
-const sound_volume = 0.5; // Global sound volume
+const sound_volume = 0.7; // Global sound volume
 const gif_indexes = [0,1,2,3,4,5,6]; // array of gif indexes from 'gif_paths'
 let number_of_cards; // '4, 6, 8, 10, 12, 14'
 let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repeating paired indexes from 0 to 6.
@@ -240,9 +240,9 @@ function toggle_sound() {
 // Outputs: none
 //-------------------------------------------------------------------------
 function start_background_music() {
-    DOM_background_music.currentTime=Math.floor(Math.random()*30); // Start at a random time
-    DOM_sound_status.volume = sound_volume; // set volume
-    DOM_background_music.play(); // play
+    DOM_background_music.currentTime = 0;
+    DOM_sound_status.volume = sound_volume;
+    DOM_background_music.play();
 }
 
 //-------------------------------------------------------------------------
@@ -331,6 +331,7 @@ function update_board_state(card_index) {
         
         if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
             && game_state == 'playing'){
+                DOM_background_music.pause();
                 play_sound('victory');
                 setTimeout(function(){
                     let timer_string = get_time_string(timer);
