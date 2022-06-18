@@ -7,6 +7,11 @@ const gif_paths = ['imgs/bobrossparrot.gif',
                    'imgs/revertitparrot.gif',
                    'imgs/tripletsparrot.gif',
                    'imgs/unicornparrot.gif'] // array of gif paths
+const sound_effects = {'bird': 'media/bird.wav',
+                       'correct': 'media/correct.mp3',
+                       'wrong': 'media/wrong.mp3',
+                       'victory': 'media/victory.mp3'};
+let play_sounds = true; // whether or not to play sound effects
 const gif_indexes = [0,1,2,3,4,5,6]; // array of gif indexes from 'gif_paths'
 let number_of_cards; // '4, 6, 8, 10, 12, 14'
 let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repeating paired indexes from 0 to 6.
@@ -21,6 +26,7 @@ const DOM_card_container = document.querySelector('.card_container');
 let DOM_cards;
 const DOM_plays_display = document.querySelector('.n_plays_display');
 const DOM_timer_display = document.querySelector('.timer_display');
+const DOM_sound_status = document.querySelector('.bottom_menu > div:nth-child(3) h2');
 
 // -------------------------------- Functions --------------------------------
 
@@ -160,6 +166,66 @@ function count_occurrences_in_array(array, elem){
     return cont;
 }
 
+
+//-------------------------------------------------------------------------
+// Function: play_sound(sound_type)
+// Description: Executes different sound effects depending on input parameter
+//
+// Inputs: sound_type ('bird', 'correct', 'wrong', 'victory')
+//
+// Outputs: none
+//-------------------------------------------------------------------------
+function play_sound(sound_type) {
+
+    let audio = document.createElement('audio');
+    switch (sound_type) {
+        case 'bird':
+            audio.src = sound_effects['bird'];
+            audio.volume = 0.5;
+            break;
+        case 'correct':
+            audio.src = sound_effects['correct'];
+            audio.volume = 0.5;
+            break;
+        case 'wrong':
+            audio.src = sound_effects['wrong'];
+            audio.volume = 0.5;
+            break;
+        case 'victory':
+            audio.src = sound_effects['victory'];
+            audio.volume = 0.5;
+            break;
+    
+        default:
+            break;
+    }
+    if(play_sounds){
+        audio.play();
+    }
+}
+
+
+//-------------------------------------------------------------------------
+// Function: toggle_sound
+// Description: Mutes or un-mutes all sound
+//
+// Inputs: none
+//
+// Outputs: none
+//-------------------------------------------------------------------------
+function toggle_sound(){
+    play_sounds = (play_sounds == true) ? false : true;
+    sound_icons = document.querySelectorAll('ion-icon');
+    sound_icons[0].classList.toggle('hidden');
+    sound_icons[1].classList.toggle('hidden');
+    if (play_sounds){
+        DOM_sound_status.innerHTML = 'Sound: On';
+    }
+    else{
+        DOM_sound_status.innerHTML = 'Sound: Off';
+    }
+}
+
 //-------------------------------------------------------------------------
 // Function: flip_card(c_i)
 // Description: Flips the card by changing css properties of the
@@ -175,15 +241,15 @@ function flip_card(c_i) {
     const card_back_face = DOM_cards[c_i].querySelector('.card_back_face')
 
     if (cards_states[c_i] == 'face_down'){
-        console.log('face_down');
         card_front_face.style.transform='rotateY(0deg)';
         card_back_face.style.transform='rotateY(-180deg)';
     }
     else{
-        console.log('not_face_down');
         card_front_face.style.transform='rotateY(180deg)';
         card_back_face.style.transform='rotateY(0deg)';
     }
+
+    
     
 }
 
@@ -208,6 +274,7 @@ function update_board_state(card_index) {
 
         // No card was being guessed
         if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 0){
+            play_sound('bird');
             flip_card(card_index);
             cards_states[card_index] = 'face_up_guessing';
         }
@@ -219,38 +286,38 @@ function update_board_state(card_index) {
 
             // Correct Guess
             if (chosen_gif_indexes[card_index] == chosen_gif_indexes[previous_guess_index]){
-                console.log('-------------------------------')
-                console.log('Correct Guess');
+                play_sound('correct');
                 flip_card(card_index);
                 cards_states[previous_guess_index] = 'face_up_correct';
                 cards_states[card_index] = 'face_up_correct';
             }
             // Incorrect Guess (flip card, wait 1 sec then flip back both guesses)
             else{
-                console.log('-------------------------------')
-                console.log('Incorrect Guess');
                 flip_card(card_index);
                 cards_states[card_index] = 'face_up_guessing';
                 game_state = 'waiting'; // disables clicks on remaining cards while waiting 1s
                 setTimeout(function(){
                     flip_card(previous_guess_index);
                     flip_card(card_index);
+                    play_sound('wrong');
                     cards_states[previous_guess_index] = 'face_down';
                     cards_states[card_index] = 'face_down';
                     game_state = 'playing';
                 }, 1000);
             }
         }
-
-        // Check if all cards have been guessed correctly
-        setTimeout(function(){
-            if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
-                && game_state == 'playing'){
+        
+        if (count_occurrences_in_array(cards_states, 'face_up_correct') == cards_states.length
+            && game_state == 'playing'){
+                play_sound('victory');
+                setTimeout(function(){
                     let timer_string = get_time_string(timer);
                     alert(`Voce ganhou em ${number_of_plays} jogadas!\nTempo de jogo ${timer_string}`);
                     game_won();
+                }, 500);
             }
-        }, 500);
+        // Check if all cards have been guessed correctly
+        
     }
 }
 

@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+ion-icon {
+    font-size: 40px;
+    color: #75B79E;
+    position: absolute;
+    bottom: 12px;
+    cursor: pointer;
+}
+
 body {
     background-color: #EEF9BF;
     display: flex;
@@ -41,7 +49,7 @@ h1 {
     min-height: 146px;
     margin: 0 0 34px 34px;
     cursor: pointer;
-    animation-duration: 0.6s;
+    animation-duration: 1s;
     animation-iteration-count: infinite;
     transform-origin: center;
 }
@@ -52,9 +60,9 @@ h1 {
 }
 @keyframes oscilate {
     0%   { transform: translateY(0); }
-    25%  { transform: translateY(-6px); }
+    25%  { transform: translateY(-4px); }
     50%  { transform: translateY(0);}
-    75%  { transform: translateY(6px); }
+    75%  { transform: translateY(4px); }
     100% { transform: translateY(0); }
 }
 
@@ -70,6 +78,9 @@ h1 {
     transform-style: preserve-3d;
     backface-visibility: hidden;
 }
+.card_face:hover {
+    background-color: #51806e;
+}
 .card_face > img{
     margin: 24px 7px 22px 10px;
     width: 100px;
@@ -81,16 +92,42 @@ h1 {
 }
 
 .bottom_menu {
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
+.bottom_menu > div{
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px 20px 15px;
+    position: relative;
+}
+.bottom_menu h2{
+    color: #75B79E;
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.004em;
+}
+.bottom_menu > div:nth-child(3) h2 {
+    text-align: initial;
+    width: 150px;
+    position: absolute;
+    top: 0;
+}
 .timer_display, .n_plays_display {
-    background-color: #75B79E;
-    border: 2px solid rgba(0, 0, 0, 1);
+    background-color: #A7E9AF;
+    border: 2px solid #99CEA8;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 4px #75b79e69;
+    box-shadow: 0px 0px 10px 1px #99CEA8;
     margin: auto 25px auto 25px;
     width: 130px;
     height: 45px;
@@ -101,10 +138,14 @@ h1 {
     font-style: normal;
     font-weight: 700;
     font-size: 25px;
-    color: rgba(0, 0, 0, 1);
+    color: #51806e;
 }
 .n_plays_display {
     width: 50px;
+}
+
+.hidden {
+    display: none;
 }
 
 
