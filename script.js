@@ -144,7 +144,6 @@ function initialize_game() {
     DOM_plays_display.innerHTML = number_of_plays;
     timer = 0;
     game_state = 'playing';
-    start_timer();
 }
 
 //-------------------------------------------------------------------------
@@ -216,7 +215,6 @@ function play_sound(sound_type) {
 // Outputs: none
 //-------------------------------------------------------------------------
 function toggle_sound() {
-    // play_sounds = (play_sounds == true) ? false : true;
     play_sounds = !play_sounds;
     sound_icons = document.querySelectorAll('ion-icon');
     sound_icons[0].classList.toggle('hidden');
@@ -240,9 +238,12 @@ function toggle_sound() {
 // Outputs: none
 //-------------------------------------------------------------------------
 function start_background_music() {
-    DOM_background_music.currentTime = 0;
-    DOM_sound_status.volume = sound_volume;
-    DOM_background_music.play();
+    if (DOM_background_music.paused && play_sounds){
+        DOM_background_music.currentTime = 0;
+        DOM_sound_status.volume = sound_volume;
+        DOM_background_music.play();
+    }
+    
 }
 
 //-------------------------------------------------------------------------
@@ -290,8 +291,10 @@ function update_board_state(card_index) {
 
         number_of_plays += 1;
         DOM_plays_display.innerHTML = number_of_plays;
+        // Start timer and background music on first play
         if (number_of_plays == 1){
             start_background_music();
+            start_timer();
         }
 
         // No card was being guessed
@@ -360,6 +363,7 @@ function game_won(){
     const ans = prompt(`Gostaria de reiniciar a partida? ('sim' ou 'não')`);
     if (ans == 'sim'){
         DOM_card_container.innerHTML = '';
+        DOM_timer_display.textContent = '';
         number_of_cards = ask_number_of_cards();
         chosen_gif_indexes = choose_gif_indexes_in_game();
         initialize_game();
