@@ -13,13 +13,14 @@ let chosen_gif_indexes; // array of length 'number_of_cards' containing non-repe
 let game_state; // 'playing', 'won'
 let cards_states;   // 'face_down', 'face_up_guessing', 'face_up_correct'
 let number_of_plays; // number of times user has clicked to flip a card
-let timer = 0; // Timer (in seconds)
+let timer = 0; // Timer (in miliseconds)
 let timer_interval;
 
 // DOM objects
 const DOM_card_container = document.querySelector('.card_container');
 let DOM_cards;
-const DOM_display = document.querySelector('.timer_display');
+const DOM_plays_display = document.querySelector('.n_plays_display');
+const DOM_timer_display = document.querySelector('.timer_display');
 
 // -------------------------------- Functions --------------------------------
 
@@ -132,6 +133,7 @@ function initialize_game() {
         cards_states.push('face_down');
     }
     number_of_plays = 0;
+    DOM_plays_display.innerHTML = number_of_plays;
     timer = 0;
     game_state = 'playing';
     start_timer();
@@ -202,6 +204,7 @@ function update_board_state(card_index) {
     if (cards_states[card_index] == 'face_down' && game_state == 'playing'){
 
         number_of_plays += 1;
+        DOM_plays_display.innerHTML = number_of_plays;
 
         // No card was being guessed
         if (count_occurrences_in_array(cards_states, 'face_up_guessing') == 0){
@@ -262,7 +265,7 @@ function game_won(){
     game_state = 'won';
     clearInterval(timer_interval);
 
-    const ans = prompt('Gostaria de reiniciar a partida?');
+    const ans = prompt(`Gostaria de reiniciar a partida? ('sim' ou 'não')`);
     if (ans == 'sim'){
         DOM_card_container.innerHTML = '';
         number_of_cards = ask_number_of_cards();
@@ -280,16 +283,27 @@ function game_won(){
 
 
 
-function get_time_string(timer_in_s) {
+function get_time_string(timer_in_ms) {
 
     let minutes;
     let seconds;
+    let miliseconds;
+    let timer_in_s = timer_in_ms/1000;
     minutes = parseInt(timer_in_s / 60, 10);
     seconds = parseInt(timer_in_s % 60, 10);
+    miliseconds = parseInt(timer_in_ms % 1000, 10);
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
+    if (miliseconds < 10){
+        miliseconds = "00"+miliseconds
+    }
+    else if (miliseconds < 100){
+        miliseconds = "0"+miliseconds
+    }
+    else{
+    }
 
-    let timer_string = minutes + ":" + seconds;
+    let timer_string = minutes + ":" + seconds + ":" + miliseconds;
     return timer_string;
 
 }
@@ -299,9 +313,9 @@ function start_timer() {
     let timer_string;
     timer_interval = setInterval(function () {
         timer_string = get_time_string(timer);
-        DOM_display.textContent = timer_string;
-        timer++;
-    }, 1000);
+        DOM_timer_display.textContent = timer_string;
+        timer += 10;
+    }, 10);
 }
 
 
