@@ -168,4 +168,8 @@ h1 {
         margin: 0 auto 34px auto;
     }
 
+    .bottom_menu > div:nth-child(3) h2 {
+        width: initial;
+    }
+
 }

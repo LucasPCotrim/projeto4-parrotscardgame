@@ -181,19 +181,19 @@ function play_sound(sound_type) {
     switch (sound_type) {
         case 'bird':
             audio.src = sound_effects['bird'];
-            audio.volume = 0.5;
+            audio.volume = 0.2;
             break;
         case 'correct':
             audio.src = sound_effects['correct'];
-            audio.volume = 0.5;
+            audio.volume = 0.2;
             break;
         case 'wrong':
             audio.src = sound_effects['wrong'];
-            audio.volume = 0.5;
+            audio.volume = 0.2;
             break;
         case 'victory':
             audio.src = sound_effects['victory'];
-            audio.volume = 0.5;
+            audio.volume = 0.1;
             break;
     
         default:
