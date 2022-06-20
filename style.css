@@ -96,6 +96,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin: 0 auto;
 }
 
 .bottom_menu > div{
@@ -174,6 +175,29 @@ h1 {
     @keyframes oscilate {
         0%   { transform: translateY(0); }
         100% { transform: translateY(0); }
+    }
+
+    .bottom_menu {
+        justify-content: space-around;
+    }
+    .bottom_menu h2{
+        font-size: 18px;
+    }
+    .timer_display {
+        margin: auto 20px auto 20px;
+        width: 80px;
+        font-size: 16px;
+    }
+    .n_plays_display {
+        margin: auto 20px auto 20px;
+        width: 50px;
+        font-size: 16px;
+    }
+
+    .bottom_menu > div{
+        margin: 0 5px 20px 5px;
+        width: 100px;
+        justify-content: space-between;
     }
 
     .bottom_menu > div:nth-child(3) h2 {
